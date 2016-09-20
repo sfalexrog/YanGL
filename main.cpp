@@ -58,6 +58,10 @@ int main()
     SDL_Event e;
 
     bool quit = false;
+
+    int brightness = 0;
+    int fade = 1;
+
     while (!quit)
     {
         while(SDL_PollEvent(&e))
@@ -70,6 +74,18 @@ int main()
 
             }
         }
+        // Just change brightness on each frame, will not look good, but at least something
+        brightness += fade;
+        if (brightness == 255 || brightness == 0)
+        {
+            fade = -fade;
+        }
+        GLfloat bf = brightness / 255.0;
+
+        glClearColor(bf, bf, bf, 1.0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        SDL_GL_SwapWindow(w);
     }
     SDL_GL_DeleteContext(context);
     SDL_DestroyWindow(w);
